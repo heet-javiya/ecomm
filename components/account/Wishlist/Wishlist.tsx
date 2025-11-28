@@ -1,21 +1,33 @@
 "use client";
 
-import React from "react";
+import React, { useMemo, useState } from "react";
+import Input from "@/components/common/Input/Input";
 
-const wishlistItems = [
+type WishlistItem = {
+  id: number;
+  name: string;
+  price: string;
+  image: string;
+  inStock: boolean;
+  category?: string;
+};
+
+const wishlistItems: WishlistItem[] = [
   {
     id: 1,
     name: "Cherry Garcia",
     price: "$1,000.00",
-    image: "/images/categories/bigflower.png",
+    image: "/images/categories/Graphes.png",
     inStock: true,
+    category: "Bulk Flowers",
   },
   {
     id: 2,
     name: "Italian Ice",
     price: "$500.00",
-    image: "/images/categories/canphoto.jpg",
+    image: "/images/categories/twoshakker.png",
     inStock: true,
+    category: "Bulk Flowers",
   },
   {
     id: 3,
@@ -23,47 +35,111 @@ const wishlistItems = [
     price: "$1,500.00",
     image: "/images/categories/shakker.png",
     inStock: false,
+    category: "Bulk Flowers",
+  },
+  // duplicated a few to better fill the grid in preview
+  {
+    id: 4,
+    name: "Froyo",
+    price: "$1,350.00 - $1,450.00",
+    image: "/images/categories/shakker.png",
+    inStock: true,
+    category: "Bulk Flowers",
+  },
+  {
+    id: 5,
+    name: "Frosted Donuts",
+    price: "$850.00 - $14,000.00",
+    image: "/images/categories/Graphes.png",
+    inStock: true,
+    category: "Bulk Flowers",
+  },
+  {
+    id: 6,
+    name: "Warheads",
+    price: "$1,400.00 - $1,500.00",
+    image: "/images/categories/twoshakker.png",
+    inStock: true,
+    category: "Bulk Flowers",
   },
 ];
 
 export function Wishlist() {
-  return (
-    <div className="bg-white rounded-lg shadow p-6">
-      <h2 className="text-2xl font-bold mb-6">My Wishlist</h2>
+  const [query, setQuery] = useState("");
+  const [view, setView] = useState("All");
 
-      {wishlistItems.length === 0 ? (
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return wishlistItems.filter((item) => {
+      if (view === "InStock" && !item.inStock) return false;
+      if (view === "OutOfStock" && item.inStock) return false;
+      if (!q) return true;
+      return item.name.toLowerCase().includes(q) || (item.category || "").toLowerCase().includes(q);
+    });
+  }, [query, view]);
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">My Wishlist</h2>
+        <div className="flex items-center gap-4">
+          <label className="text-sm text-gray-600">View:</label>
+          <select
+            value={view}
+            onChange={(e) => setView(e.target.value)}
+            className="rounded border border-gray-300 px-3 py-2 text-sm"
+          >
+            <option value="All">All</option>
+            <option value="InStock">In Stock</option>
+            <option value="OutOfStock">Out of Stock</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="flex gap-4 items-center">
+        <Input
+          placeholder="Search for your save items"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+        <button className="bg-[#F0BA43] text-[#1D1D1D] font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors">Search</button>
+      </div>
+
+      {filtered.length === 0 ? (
         <div className="text-center py-12">
-          <p className="text-gray-600 mb-4">Your wishlist is empty</p>
+          <p className="text-gray-600 mb-4">No items found</p>
           <a href="#" className="text-yellow-600 font-semibold hover:underline">
             Continue Shopping
           </a>
         </div>
       ) : (
-        <div className="space-y-4">
-          {wishlistItems.map((item) => (
-            <div key={item.id} className="border border-gray-200 rounded-lg p-4 flex gap-4">
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-20 h-20 object-cover rounded"
-              />
-              <div className="flex-1">
-                <h3 className="font-semibold text-lg mb-1">{item.name}</h3>
-                <p className="text-gray-600 text-sm mb-2">{item.price}</p>
-                <p className="text-xs text-gray-500">
-                  {item.inStock ? "In Stock" : "Out of Stock"}
-                </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {filtered.map((item) => (
+            <div key={item.id} className="rounded-lg border border-gray-200 overflow-hidden bg-[#F2F2F2]">
+              <div className="p-4 flex items-center justify-center h-40">
+                <img src={item.image} alt={item.name} className="max-h-full object-contain" />
               </div>
-              <div className="flex flex-col gap-2">
-                <button
-                  disabled={!item.inStock}
-                  className="bg-[#F0BA43] text-[#1D1D1D] font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  Add to Cart
-                </button>
-                <button className="text-red-600 font-semibold text-sm hover:underline">
-                  Remove
-                </button>
+              <div className="p-4 flex flex-col gap-3">
+                <p className="text-xs text-gray-500">{item.category}</p>
+                <h3 className="font-semibold text-base">{item.name}</h3>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 text-sm text-yellow-500">
+                      <span>4.4</span>
+                      <span>★ ★ ★ ★ ☆</span>
+                    </div>
+                    <p className="text-sm text-gray-700 mt-1">{item.price}</p>
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    disabled={!item.inStock}
+                    className="w-full bg-[#F0BA43] text-[#1D1D1D] font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    BUY
+                  </button>
+                </div>
               </div>
             </div>
           ))}
