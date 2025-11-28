@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 18, "column": 0}, "map": {"version":3,"sources":["file:///D:/free/Ecomm/app/categories/page.tsx"],"sourcesContent":["export default function CategoriesPage() {\n  return (\n    <div className=\"container mx-auto px-4 py-16\">\n      <h1 className=\"text-4xl font-bold text-gray-900 dark:text-white mb-8\">\n        All Categories\n      </h1>\n      <p className=\"text-lg text-gray-600 dark:text-gray-300\">\n        Explore our product categories. Coming soon!\n      </p>\n    </div>\n  );\n}\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,6VAAC;QAAI,WAAU;;0BACb,6VAAC;gBAAG,WAAU;0BAAwD;;;;;;0BAGtE,6VAAC;gBAAE,WAAU;0BAA2C;;;;;;;;;;;;AAK9D"}}]
+}
