@@ -83,14 +83,16 @@ export function Wishlist() {
 
 	return (
 		<div className="flex flex-col gap-6">
-			<div className="flex items-center justify-between">
-				<h2 className="text-2xl font-bold">My Wishlist</h2>
+			<div className="flex flex-col md:flex-row items-center justify-between">
+				<h2 className="text-base md:text-2xl font-bold">My Wishlist</h2>
 				<div className="flex items-center gap-4">
-					<label className="text-sm text-gray-600">View:</label>
+					<label className="text-[12px] md:text-sm text-gray-600">
+						View:
+					</label>
 					<select
 						value={view}
 						onChange={(e) => setView(e.target.value)}
-						className="rounded border border-gray-300 px-3 py-2 text-sm"
+						className="rounded border border-gray-300 md:px-3 md:py-2 p-1 pt-2 md:pt-0 text-[12px] md:text-sm"
 					>
 						<option value="All">All</option>
 						<option value="InStock">In Stock</option>
@@ -99,13 +101,14 @@ export function Wishlist() {
 				</div>
 			</div>
 
-			<div className="flex gap-4 items-center">
+			<div className="flex  items-center h-10 md:h-[52px]">
 				<Input
 					placeholder="Search for your save items"
 					value={query}
 					onChange={(e) => setQuery(e.target.value)}
+					className=""
 				/>
-				<button className="bg-[#F0BA43] text-[#1D1D1D] font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors">
+				<button className="bg-[#F0BA43] h-10 md:h-[52px] text-[#1D1D1D] font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors">
 					Search
 				</button>
 			</div>
@@ -134,20 +137,20 @@ export function Wishlist() {
 									className="max-h-full object-contain"
 								/>
 							</div>
-							<div className="p-4 flex flex-col gap-3">
-								<p className="text-xs text-gray-500">
+							<div className="md:p-4 p-1 flex flex-col md:gap-3 gap-1 ">
+								<p className="text-[10px] md:text-base text-gray-500">
 									{item.category}
 								</p>
-								<h3 className="font-semibold text-base">
+								<h3 className="font-semibold sm:text-base text-[10px]">
 									{item.name}
 								</h3>
 								<div className="flex items-center justify-between">
 									<div>
-										<div className="flex items-center gap-2 text-sm text-yellow-500">
+										<div className="flex items-center gap-2 text-[10px] md:text-sm text-yellow-500">
 											<span>4.4</span>
 											<span>★ ★ ★ ★ ☆</span>
 										</div>
-										<p className="text-sm text-gray-700 mt-1">
+										<p className="md:text-[20px] text-[10px] text-gray-700 md:mt-1">
 											{item.price}
 										</p>
 									</div>
@@ -156,7 +159,7 @@ export function Wishlist() {
 								<div>
 									<button
 										disabled={!item.inStock}
-										className="w-full bg-[#F0BA43] text-[#1D1D1D] font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+										className="w-full h-10 md:h-[52px] bg-[#F0BA43] text-[#1D1D1D] font-semibold px-4 py-2 rounded-lg hover:bg-yellow-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
 									>
 										BUY
 									</button>
